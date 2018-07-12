@@ -3,6 +3,7 @@
 
 // init project
 var express = require('express');
+var reqip = require('request-ip');
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
@@ -24,7 +25,13 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-
+app.get("/api/whoami", function(req, res) {
+  res.json({
+    ipaddress: reqip.getClientIp(req), 
+    language: req.headers['accept-language'], 
+    software: req.headers['user-agent']
+  });
+});
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
